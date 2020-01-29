@@ -1,6 +1,7 @@
 body {
 	background: #444;
 	margin-top:2em;
+	font-family: sans-serif;
 }
 
 lul,button {
@@ -28,7 +29,6 @@ canvas {
 }
 
 info {
-	font-family: sans-serif;
 	display:block;
 	color: #0c0;
 	width:512px;
@@ -52,4 +52,9 @@ a {
 
 hidden {
 	display: none;
+}
+
+ul {
+	list-style-type: square;
+	color: white;
 }
