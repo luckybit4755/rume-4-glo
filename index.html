@@ -1,0 +1,35 @@
+<HTML>
+	<HEAD>
+		<TITLE>rume-4-glo</TITLE>
+		<link rel="stylesheet" href="css/css.css"></link>
+		<script type="module">
+			import Utilo from './js/lib/Utilo.js'; 
+			window.onload = function() {
+				Utilo.getByTag( 'a', '*' ).map( 
+					function( a ) {
+						let src = a.href
+							.replace( /.*\//, 'images/screenshot/' ) 
+							.replace( /\.html$/, '.png' )
+						;
+						let img = Utilo.makeElement( {type:'img',src:src} );
+						img.style.width = '128px';
+						img.style.display = 'block';
+						a.appendChild( img );
+					}
+				)
+			}
+		</script>
+	</HEAD>
+	<BODY>
+		<ul>
+			<!--
+				ls html | sed 's,.*,@@@<li><a href="html/&">&</a></li>,' | tr @ '\t'
+			-->
+			<li><a href="html/template.html">template.html</a></li>
+			<li><a href="html/inevitable_cube.html">inevitable_cube.html</a></li>
+			<li><a href="html/normal_cube.html">normal_cube.html</a></li>
+			<li><a href="html/prismatic_sphere.html">prismatic_sphere.html</a></li>
+			<li><a href="html/slerp_arm.html">slerp_arm.html</a></li>
+		</ul>
+	</BODY>
+</HTML>
