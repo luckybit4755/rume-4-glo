@@ -1,0 +1,22 @@
+{
+    "author": "valalalalala",
+    "bugs": {
+        "url": "https://github.com/luckybit4755/rume-4-glo/issues"
+    },
+    "description": "Small WebGL Library",
+    "homepage": "https://github.com/luckybit4755/rume-4-glo#readme",
+    "keywords": [
+        "webgl"
+    ],
+    "license": "ISC",
+    "main": "index.js",
+    "name": "rume-4-glo",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/luckybit4755/rume-4-glo.git"
+    },
+    "scripts": {
+        "test": "echo idk"
+    },
+    "version": "1.0.0"
+}
