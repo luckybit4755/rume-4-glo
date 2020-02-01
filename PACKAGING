@@ -1,0 +1,34 @@
+# install parcel and tape
+
+## developing with parcel
+
+> npm install -g parcel parcel
+> npm run dev 
+
+then, in a browser, open: http://localhost:1234
+
+## testing via tape
+
+> npm install tape --save-dev
+> npm run test
+
+Here are some useful tape method:
+
+> assert          deepEqual     deepEquals        deepLooseEqual
+> doesNotEqual    doesNotMatch  doesNotThrow      equal
+> equals          error         fail              ifErr
+> ifError         iferror       is                isEqual
+> isEquivalent    isInequal     isInequivalent    isNot
+> isNotDeepEqual  isNotDeeply   isNotEqual        isNotEquivalent
+> looseEqual      looseEquals   match             not
+> notDeepEqual    notDeepEquals notDeepLooseEqual notDeeply
+> notEqual        notEquals     notEquivalent     notLooseEqual
+> notLooseEquals  notOk         notSame           notStrictEqual
+> notStrictEquals notok         ok                pass
+> same            skip          strictEqual       strictEquals
+ 
+## build with parcel-bundler
+
+> npm install -g parcel-bundler 
+> npm run build
+
