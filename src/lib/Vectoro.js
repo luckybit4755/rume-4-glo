@@ -1,7 +1,13 @@
 import Utilo from './Utilo.js';
 
 const Vectoro = {
-	copy: function( v ) {
+	set:function( x, y, z ) {
+		return [ x, y, z ];
+	}
+	, zed: function() {
+		return Vectoro.set( 0, 0, 0 );
+	}
+	, copy: function( v ) {
 		return [ v[ 0 ], v[ 1 ], v[ 2 ] ];
 	}
 	, scale: function( s, v ) {
