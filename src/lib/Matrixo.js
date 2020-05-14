@@ -82,7 +82,7 @@ const Matrixo = {
 
 				result[ idx ] = sum;
 
-				console.log( symbolic ); // I pulled a sneaky!
+				//console.log( symbolic ); // I pulled a sneaky!
 			}
 		}
 		return result;
