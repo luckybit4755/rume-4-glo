@@ -25,9 +25,7 @@ _minnow_modless() {
 _minnow_spaceless() {
 	tr '\t' ' ' | sed -E 's,^ +,,;s, +, ,g;s, +$,,' \
 	| sed 's, *\([[,{}()=!@<;>#?:+*/\-]\) *,\1,g;s, ],],g;' \
-	| grep -v '^$' \
-	| tr -d '\n'
-	echo
+	| grep -v '^$' 
 }
 
 _minnow_main ${*}
