@@ -7,32 +7,50 @@ import Utilo from './Utilo.js';
 
 // [x,y,z,w];
 const Quaterniono = {
-	set:function( x, y, z, w ) {
+	set:function( x, y, z, w, storage ) {
 		w = Utilo.idk( w, 0 );
-		return [ x, y, z, w ];
+		storage = Utilo.idk( storage, new Array( 4 ) );
+		storage[ 0 ] = x;
+		storage[ 1 ] = y;
+		storage[ 2 ] = z;
+		storage[ 3 ] = w;
+		return storage;
 	}
-	, rotate: function( angle, q ) {
+	, copy:function( from, to ) {
+		return set( from[ 0 ], from[ 1 ], from[ 2 ], from[ 3 ], to );
+	}
+	, zed:function( storage ) {
+		return Quaterniono.set( 0,0,0,0, storage );
+	}
+	, rotate: function( angle, q, storage) {
 		const s = Math.sin( angle / 2 );
-		return [ q[ 0 ] * s, q[ 1 ] * s, q[ 2 ] * s, Math.cos( angle / 2 ) ]
-	}
-	, rotatePoint: function( q, p ) {
-		return Quaterniono.multiply( 
-			  Quaterniono.multiply( q, p )
-			, Quaterniono.conjugate( q )
+		return Quaterniono.set(
+			  q[ 0 ] * s
+			, q[ 1 ] * s
+			, q[ 2 ] * s
+			, Math.cos( angle / 2 ) 
 		);
 	}
-	, conjugate: function( q ) {
-		return [ -q[ 0 ], -q[ 1 ], -q[ 2 ], q[ 3 ] ];
+	, rotatePoint: function( q, p, storage, tmp, tmp2 ) {
+		return Quaterniono.multiply( 
+			  Quaterniono.multiply( q, p, tmp )
+			, Quaterniono.conjugate( q, tmp2 )
+			, storage
+		);
 	}
-	, multiply: function( q, p ) {
-		return [
+	, conjugate: function( q, storage ) {
+		return Quaterniono.set( -q[ 0 ], -q[ 1 ], -q[ 2 ], q[ 3 ], storage );
+	}
+	, multiply: function( q, p, storage ) {
+		return Quaterniono.set(
 			   q[ 0 ] * p[ 3 ] + q[ 1 ] * p[ 2 ] - q[ 2 ] * p[ 1 ] + q[ 3 ] * p[ 0 ]
 			, -q[ 0 ] * p[ 2 ] + q[ 1 ] * p[ 3 ] + q[ 2 ] * p[ 0 ] + q[ 3 ] * p[ 1 ]
 			,  q[ 0 ] * p[ 1 ] - q[ 1 ] * p[ 0 ] + q[ 2 ] * p[ 3 ] + q[ 3 ] * p[ 2 ]
 			, -q[ 0 ] * p[ 0 ] - q[ 1 ] * p[ 1 ] - q[ 2 ] * p[ 2 ] + q[ 3 ] * p[ 3 ]
-		]
+			, storage
+		);
 	}
-	, toMatrix: function( q ) {
+	, toMatrix: function( q, storage ) {
 		const x = q[ 0 ];
 		const y = q[ 1 ];
 		const z = q[ 2 ];
@@ -53,31 +71,45 @@ const Quaterniono = {
 		const wx = w * x2;
 		const wy = w * y2;
 		const wz = w * z2;
-		return [
-			1 - yy - zz,     yx + wz,        zx - wy,       0,
-			yx - wz,         1 - xx - zz,    zy + wx,       0,
-			zx + wy,         zy - wx,        1 - xx - yy,   0,
-			0,               0,              0,             1
-		];
+
+		storage = Utilo.idk( storage, new Array( 16 ) );
+		storage[  0 ] = 1 - yy - zz
+		storage[  1 ] = yx + wz
+		storage[  2 ] = zx - wy
+		storage[  3 ] = 0
+		storage[  4 ] = yx - wz
+		storage[  5 ] = 1 - xx - zz
+		storage[  6 ] = zy + wx
+		storage[  7 ] = 0
+		storage[  8 ] = zx + wy
+		storage[  9 ] = zy - wx
+		storage[ 10 ] = 1 - xx - yy
+		storage[ 11 ] = 0
+		storage[ 12 ] = 0
+		storage[ 13 ] = 0
+		storage[ 14 ] = 0
+		storage[ 15 ] = 1
+		return storage;
 	}
-	, normalize: function( q ) {
+	, normalize: function( q, storage ) {
 		const length = Quaterniono.length( q );
 		return (
 			0 === length 
-			? q 
-			: Quaterniono.scale( 1 / length, q )
+			? Quaterniono.copy( q, storage )
+			: Quaterniono.scale( 1 / length, q, storage )
 		);
 	}
 	, length: function( q ) {
 		return Math.sqrt( Quaterniono.dot( q, q ) );
 	}
-	, scale: function( s, q ){
-		return [
+	, scale: function( s, q, storage ){
+		return Quaterniono.set(
 			q[ 0 ] * s, 
 			q[ 1 ] * s, 
 			q[ 2 ] * s, 
-			q[ 3 ] * s  
-		];
+			q[ 3 ] * s,
+			storage
+		);
 	}
 	, dot: function( q, p ) {
 		return [
@@ -87,28 +119,30 @@ const Quaterniono = {
 			q[ 3 ] * p[ 3 ]  
 		];
 	}
-	, add: function( q, p ){
-		return [
+	, add: function( q, p, storage ){
+		return Quaterniono.set(
 			q[ 0 ] + p[ 0 ],
 			q[ 1 ] + p[ 1 ],
 			q[ 2 ] + p[ 2 ],
-			q[ 3 ] + p[ 3 ]
-		];
+			q[ 3 ] + p[ 3 ],
+			storage
+		);
 	}
-	, subtract: function( q, p ){
-		return [
+	, subtract: function( q, p, storage ){
+		return Quaterniono.set(
 			q[ 0 ] - p[ 0 ],
 			q[ 1 ] - p[ 1 ],
 			q[ 2 ] - p[ 2 ],
-			q[ 3 ] - p[ 3 ]
-		];
+			q[ 3 ] - p[ 3 ],
+			storage
+		);
 	}
-	, interpolateLinearly: function( q, p, t ) {
-		return Quaterniono.normalize(
-			Quaterniono.add( 
-				q,
-				Quaterniono.scale( t, Quaterniono.subtract( p, q ) )
-			)
+	// not normalized...
+	, interpolateLinearly: function( q, p, t, storage, tmp1, tmp2 ) {
+		return Quaterniono.add( 
+			q,
+			Quaterniono.scale( t, Quaterniono.subtract( p, q, tmp1 ), tmp2 ),
+			storage
 		);
 	}
 	, slerp: function( q, p, t ) {
@@ -134,7 +168,7 @@ const Quaterniono = {
 		if (dot > DOT_THRESHOLD) {
 			// If the inputs are too close for comfort, linearly interpolate
 			// and normalize the result.
-			return Quaterniono.interpolateLinearly( v0, v1, t );
+			return Quaterniono.normalize( Quaterniono.interpolateLinearly( v0, v1, t ) );
 		}
 
 		// Since dot is in range [0, DOT_THRESHOLD], acos is safe
