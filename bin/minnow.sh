@@ -1,7 +1,7 @@
 #!/bin/bash	
 
 _minnow_main() {
-	find src/lib -type f | xargs cat | _minnow_it
+	find src/lib -type f | grep -v '\.swp' | xargs cat | _minnow_it
 }
 
 _minnow_it() {
@@ -23,7 +23,8 @@ _minnow_modless() {
 
 
 _minnow_spaceless() {
-	tr '\t' ' ' | sed -E 's,^ +,,;s, +, ,g;s, +$,,' \
+	tr '\t' ' ' \
+	| sed -E 's,^ +,,;s, +, ,g;s, +$,,' \
 	| sed 's, *\([[,{}()=!@<;>#?:+*/\-]\) *,\1,g;s, ],],g;' \
 	| grep -v '^$' 
 }
