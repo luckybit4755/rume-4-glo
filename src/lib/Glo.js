@@ -65,7 +65,9 @@ const Glo = {
 		//let buffer = Glo._buffer( gl, data );
 		let buffer = Glo._bufferN( gl, name );
 
-		data = new Float32Array( data ); 
+		if ( !( 'BYTES_PER_ELEMENT' in data ) ) {
+			data = new Float32Array( data ); 
+		}
 
 		gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
 		gl.bufferData( gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW );
@@ -74,6 +76,8 @@ const Glo = {
 		let location = gl.getAttribLocation( program, name );
 		gl.enableVertexAttribArray( location );
 		gl.vertexAttribPointer( location, floatsPerValue, gl.FLOAT, false, 0, 0 );
+
+		return data;
 	},
 	matrix: function( gl, program, name, data ) {
 		data = new Float32Array( data );
