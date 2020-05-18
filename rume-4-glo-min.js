@@ -492,12 +492,15 @@ return(
 data:function(gl,program,name,data,floatsPerValue){
 floatsPerValue=Utilo.idk(floatsPerValue,3);
 let buffer=Glo._bufferN(gl,name);
+if(!('BYTES_PER_ELEMENT' in data)){
 data=new Float32Array(data);
+}
 gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
 gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);
 let location=gl.getAttribLocation(program,name);
 gl.enableVertexAttribArray(location);
 gl.vertexAttribPointer(location,floatsPerValue,gl.FLOAT,false,0,0);
+return data;
 },
 matrix:function(gl,program,name,data){
 data=new Float32Array(data);
