@@ -1,5 +1,6 @@
 import Matrixo from './Matrixo.js';
 import Mouseo  from './Mouseo.js';
+import Shadero from './Shadero.js';
 import Utilo   from './Utilo.js';
 
 const Glo = {
@@ -195,6 +196,7 @@ const Glo = {
 		Glo.draw( gl, mesh.faces, type );
 	}
 	, demoSetup: function( shaders, matrixName, flags ) {
+		shaders = Utilo.idk( shaders, Shadero.lit );
 		matrixName = Utilo.idk( matrixName, 'uMatrix' );
 		flags = Utilo.idk( flags, {} );
 
