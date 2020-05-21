@@ -22,6 +22,11 @@ const Vertexo = {
 		to[ o + 1 ] = vertices[ i + 1 ] - vertices[ j + 1 ];
 		to[ o + 2 ] = vertices[ i + 2 ] - vertices[ j + 2 ];
 	}
+	, tween:function( t, vertices, to, i, j, o ) {
+		to[ o + 0 ] = vertices[ i + 0 ] + t * ( vertices[ j + 0 ] - vertices[ i + 0 ] );
+		to[ o + 1 ] = vertices[ i + 1 ] + t * ( vertices[ j + 1 ] - vertices[ i + 1 ] );
+		to[ o + 2 ] = vertices[ i + 2 ] + t * ( vertices[ j + 2 ] - vertices[ i + 2 ] );
+	}
 	/* safe for vertices == to */
 	, normalize:function( vertices, to, i, o ) {
 		let length = this.length( vertices, i );
