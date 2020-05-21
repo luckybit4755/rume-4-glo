@@ -210,12 +210,13 @@ const Glo = {
 
 		let setup = { canvas: canvas, gl:gl, program:program, mouseControls:mouseControls };
 
-		setup.mouseLoop = function( matrix ) {
-			Glo.clear( gl );
-
+		setup.mouseLoop = function( idle, matrix ) {
+			idle = Utilo.idk( idle, 5000 );
 			matrix = Utilo.idk( matrix, Matrixo.scale( 0.55 ) );
 
-			mouseControls.idle( 5000, 0.03 );
+			Glo.clear( gl );
+
+			mouseControls.idle( idle, 0.03 );
 
         	let m = Matrixo.multiply( setup.mouseControls.matrix(), matrix );
         	Glo.matrix( gl, program, matrixName, m );
