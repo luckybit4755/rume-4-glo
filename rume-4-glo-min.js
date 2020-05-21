@@ -18,6 +18,11 @@ to[o+0]=vertices[i+0]-vertices[j+0];
 to[o+1]=vertices[i+1]-vertices[j+1];
 to[o+2]=vertices[i+2]-vertices[j+2];
 }
+,tween:function(t,vertices,to,i,j,o){
+to[o+0]=vertices[i+0]+t*(vertices[j+0]-vertices[i+0]);
+to[o+1]=vertices[i+1]+t*(vertices[j+1]-vertices[i+1]);
+to[o+2]=vertices[i+2]+t*(vertices[j+2]-vertices[i+2]);
+}
 ,normalize:function(vertices,to,i,o){
 let length=this.length(vertices,i);
 if(0==length)length=1;
@@ -666,10 +671,11 @@ let mouseControls=Mouseo.simpleControls(canvas);
 let gl=Glo.gl(canvas,flags);
 let program=Glo.program(gl,shaders.vertex,shaders.fragment);
 let setup={canvas:canvas,gl:gl,program:program,mouseControls:mouseControls};
-setup.mouseLoop=function(matrix){
-Glo.clear(gl);
+setup.mouseLoop=function(idle,matrix){
+idle=Utilo.idk(idle,5000);
 matrix=Utilo.idk(matrix,Matrixo.scale(0.55));
-mouseControls.idle(5000,0.03);
+Glo.clear(gl);
+mouseControls.idle(idle,0.03);
 let m=Matrixo.multiply(setup.mouseControls.matrix(),matrix);
 Glo.matrix(gl,program,matrixName,m);
 }
