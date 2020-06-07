@@ -1020,14 +1020,16 @@ stuff.type=stuff.type || 'div';
 let element=document.createElement(stuff.type);
 for(let k in stuff){
 if(/^(kids|type)$/.test(k))continue;
+let v=stuff[k];
 switch(k){
-case 'txt':element.appendChild(document.createTextNode(stuff[k]));break;
-default:element.setAttribute(k,stuff[k]);
+case 'txt':element.appendChild(document.createTextNode(v));break;
+case 'type_':k='type';
+default:element.setAttribute(k,v);
 }
 }
 if('kids' in stuff){
 for(let i=0;i<stuff.kids.length;i++){
-element.appendChild(makeElement(stuff.kids[i]));
+element.appendChild(this.makeElement(stuff.kids[i]));
 }
 }
 return element;
